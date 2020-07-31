@@ -1,4 +1,9 @@
 // index.js
+
+///// For final step we need to comment all this out to test nextISSTimesForMyLocation
+
+/* 
+
 const { fetchMyIP } = require('./iss');
 const { fetchCoordsByIP } = require('./iss');
 const { fetchISSFlyOverTimes } = require('./iss');
@@ -35,4 +40,41 @@ fetchISSFlyOverTimes(exampleCoords, (error, passTimes) => {
   }
 
   console.log('It worked! Returned flyover times:' , passTimes);
+}); 
+*/
+
+// nextISSTimesForMyLocation
+
+
+const { nextISSTimesForMyLocation } = require('./iss');
+
+const printPassTimes = function(passTimes) {
+  for (const pass of passTimes) {
+    const datetime = new Date(0);
+    datetime.setUTCSeconds(pass.risetime);
+    const duration = pass.duration;
+    console.log(`Next pass at ${datetime} for ${duration} seconds!`);
+  }
+};
+
+nextISSTimesForMyLocation((error, passTimes) => {
+  if (error) {
+    return console.log("It didn't work!", error);
+  }
+  // success, print out the deets!
+  console.log(passTimes);
 });
+
+
+///// With given solution the Giving an error message //////
+
+// Log error below figure out problem later.
+
+/* It didn't work! Error: connect ETIMEDOUT 5.135.160.67:443
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1144:16) {
+  errno: -4039,
+  code: 'ETIMEDOUT',
+  syscall: 'connect',
+  address: '5.135.160.67',
+  port: 443
+} */
